@@ -1,62 +1,129 @@
+
+<?php
+
+$letter;
+$isCorrect = false;
+
+if (isset($_POST['submit']) && $_COOKIE['lives'] != 0)
+{
+  $letter = $_POST['submit'];
+  for ($i=0; $i < strlen($_COOKIE['woord']); $i++)
+  {
+    if ($letter == $_COOKIE['woord'][$i])
+    {
+      $_COOKIE['woord_string'][$i] = $_COOKIE['woord'][$i];
+      setcookie('woord_string', $_COOKIE['woord_string']);
+      $isCorrect = true;
+    }
+  }
+
+  if ($_COOKIE['won'] != 'true')
+  {
+    if (!$isCorrect)
+    {
+      if ($_COOKIE['lives'] > 0)
+      {
+        $_COOKIE['lives'] = $_COOKIE['lives'] - 1;
+        setcookie('lives', $_COOKIE['lives']);
+      }
+
+
+      if ($_COOKIE['lives'] == 0)
+      {
+        $_COOKIE['message'] = 'YOU LOST :)';
+        setcookie('message', $_COOKIE['message']);
+      }
+
+    }
+  }
+
+  if ($_COOKIE['woord_string'] == $_COOKIE['woord'])
+  {
+    $_COOKIE['message'] = 'YOU WIN!!';
+    $_COOKIE['won'] = 'true';
+    setcookie('message', $_COOKIE['message']);
+    setcookie('won', $_COOKIE['won']);
+  }
+
+
+}
+
+
+
+ ?>
+
 <!DOCTYPE html>
-<html>
-<?php
+<html lang="en" dir="ltr">
+  <head>
+    <link href="style.css" rel="Stylesheet">
+    <meta charset="utf-8">
+    <title>Galgje</title>
+  </head>
+  <body>
 
-session_start();
+    <div class="container">
+      <div class="linkerdiv">
+        <div class="sub_div">
+          <form class="form" action="game.php" method="post">
+            <div class="section">
+              <input type="submit" name="submit" value="q">
+              <input type="submit" name="submit" value="w">
+              <input type="submit" name="submit" value="e">
+              <input type="submit" name="submit" value="r">
+              <input type="submit" name="submit" value="t">
+              <input type="submit" name="submit" value="y">
+              <input type="submit" name="submit" value="u">
+              <input type="submit" name="submit" value="i">
+              <input type="submit" name="submit" value="o">
+              <input type="submit" name="submit" value="p">
+            </div>
+            <div class="section">
+              <input type="submit" name="submit" value="a">
+              <input type="submit" name="submit" value="s">
+              <input type="submit" name="submit" value="d">
+              <input type="submit" name="submit" value="f">
+              <input type="submit" name="submit" value="g">
+              <input type="submit" name="submit" value="h">
+              <input type="submit" name="submit" value="j">
+              <input type="submit" name="submit" value="k">
+              <input type="submit" name="submit" value="l">
+            </div>
+            <div class="section">
+              <input type="submit" name="submit" value="z">
+              <input type="submit" name="submit" value="x">
+              <input type="submit" name="submit" value="c">
+              <input type="submit" name="submit" value="v">
+              <input type="submit" name="submit" value="b">
+              <input type="submit" name="submit" value="n">
+              <input type="submit" name="submit" value="m">
+            </div>
+          </form>
+        </div>
+        <div class="sub_div">
+          <div class="streepjes_container">
+            <?php
+            for ($i=0; $i < strlen($_COOKIE['woord']); $i++)
+            {
+              echo "<h1 class='streepje'>" . $_COOKIE['woord_string'][$i] . "</h1>";
+            }
+             ?>
+          </div>
+        </div>
+      </div>
+      <div class="rechterdiv">
+        <?php
 
-setcookie ("levens", 4);
-$woorden = array("hangman", "computer", "variable", "integer");
-echo  $_POST["woord"] . "<br>";
-?>
-    <head>
-        <title>Galgje</title>
-        <link href="style.css" rel="Stylesheet">
-    </head>
-    <body>
+        if (isset($_COOKIE['message']))
+        {
+          echo "<h1>" . $_COOKIE['message'] . "</h1>";
+        }
 
-<?php
-echo ($_COOKIE['random']);
-if (isset($_POST["letter"]))   {
-    $_COOKIE["levens"] -= 1;
-    setcookie ("levens", $_COOKIE["levens"]);
-    echo "<h1>Je hebt: " . $_COOKIE["levens"] . " levens </h1>";
-}
+        ?>
+        <div class="img_container">
+          <?php echo "<img src='img/h" . $_COOKIE['lives'] . ".png' alt=''>" ?>
+        </div>
+      </div>
+    </div>
 
-switch ($_COOKIE["levens"]) {
-    case "4";
-    echo "<img class='h1'
-    src='img/h1.png'
-    alt='h1'>";
-break;
-    case "3";
-    echo "<img class='h2'
-    src='img/h2.png'
-    alt='h2'>";
-break;
-    case "2";
-    echo "<img class='h3'
-    src='img/h3.png'            
-    alt='h3'>";
-break;
-    case "1";
-    echo "<img class='h4'
-    src='img/h4.png'
-    alt='h4'>";
-break;
-    case "0";
-    echo "<img class='h5'
-    src='img/h5.png'
-    alt='h5'>";
-    $_COOKIE["levens"] = 5;
-    setcookie ("levens", $_COOKIE["levens"]);
-    echo "Klik op submit om opnieuw te proberen of ga terug naar de homepage voor een ander woord.";
-}
-?>
-        <form action="" method='POST'>
-            <label for = "letter">Vul hier je letter in: </label> 
-            <input type="text" id="letter" name="letter" maxlength="1">
-            <input type="submit" id="antwoord"`name="antwoord" value="submit ">
-        </form>
-
-    </body>
+  </body>
 </html>

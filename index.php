@@ -1,34 +1,60 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Galgje</title>
-        <link href="style.css" rel="Stylesheet"> 
-    </head>
-    <body>
-        <center>
-        <h1> Galgje </h1>
-        <form action="" method='POST'>
-        <input type='submit' id='btn' name='keuze' value='Kies zelf een woord'>
-        <input type='submit' id='btn' name='random' value='Kies een willekeurig woord'>
-        </form>
-<?php   
-if (isset($_POST["keuze"])) {
-    echo '<form action="galgje.php" method = "POST">';
-    echo "Je hebt gekozen om zelf een woord in te voeren: <br>";
-    echo '<input type="text" name="woord">';
-    echo '<input type="submit" name="submit" value="Speel met dit woord"> ';
-    echo '</form>';
-}
-if (isset($_POST["random"])) {
-    echo '<form action="galgje.php" method = "POST">';
-    echo "Je hebt gekozen om met een willekeurig woord te spelen. <br>";
-    echo '<input type="submit" name="submit" value="Speel met een willekeurig woord"> ';
-    $woorden = array("hangman", "computer", "variable", "integer");
-    $randIndex = array_rand($woorden);
-    $random = $woorden[$randIndex];
-    setcookie('random', $random);
-}
-?>
-        </center>
-    </body>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Galgje</title>
+    <link href="style.css" rel="Stylesheet">
+  </head>
+  <body>
+    <center>
+    <form class="form" action="index.php" method="post">
+      <input type='text' id='btn' name='word' value='Kies zelf een woord'>
+      <input type='submit' id='btn' name='submit' value='Kies een willekeurig woord'>
+    </form>
+  </center>
+  </body>
 </html>
+
+<?php
+
+$woord;
+$woordString = '';
+$lives = 5;
+$message = '';
+$won = 'false';
+
+$woordenArray = array("hangman", "computer", "variable", "integer");
+
+if (isset($_POST['submit']))
+{
+
+  $woord = $_POST['word'];
+
+  if ($woord == '')
+  {
+    $woord = $woordenArray[0];
+  }
+
+  MaakWoordString($woord);
+
+  setcookie('woord', $woord);
+  setcookie('woord_string', $woordString);
+  setcookie('lives', $lives);
+  setcookie('message', $message);
+  setcookie('won', $won);
+
+  header('Location: galgje.php');
+
+}
+
+function MaakWoordString($string)
+{
+  global $woordString;
+  for ($i=0; $i < strlen($string); $i++)
+  {
+    $woordString = $woordString . '_';
+  }
+}
+
+
+ ?>
