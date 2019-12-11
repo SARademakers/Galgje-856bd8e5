@@ -25,29 +25,26 @@ $won = 'false';
 
 $woordenArray = array("hangman", "computer", "variable", "integer");
 
-if (isset($_POST['submit']))
-{
+if (isset($_POST['submit'])) {
+    $woord = $_POST['word'];
 
-  $woord = $_POST['word'];
+    if ($woord == '') {
+      $woord = $woordenArray[0];
+    }
 
-  if ($woord == '')
-  {
-    $woord = $woordenArray[0];
-  }
+    WoordString($woord);
 
-  MaakWoordString($woord);
+    setcookie('woord', $woord);
+    setcookie('woord_string', $woordString);
+    setcookie('lives', $lives);
+    setcookie('message', $message);
+    setcookie('won', $won);
 
-  setcookie('woord', $woord);
-  setcookie('woord_string', $woordString);
-  setcookie('lives', $lives);
-  setcookie('message', $message);
-  setcookie('won', $won);
-
-  header('Location: galgje.php');
+    header('Location: galgje.php');
 
 }
 
-function MaakWoordString($string)
+function WoordString($string)
 {
   global $woordString;
   for ($i=0; $i < strlen($string); $i++)

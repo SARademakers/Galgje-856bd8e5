@@ -4,56 +4,39 @@
 $letter;
 $isCorrect = false;
 
-if (isset($_POST['submit']) && $_COOKIE['lives'] != 0)
-{
+if (isset($_POST['submit']) && $_COOKIE['lives'] != 0) {
   $letter = $_POST['submit'];
-  for ($i=0; $i < strlen($_COOKIE['woord']); $i++)
-  {
-    if ($letter == $_COOKIE['woord'][$i])
-    {
-      $_COOKIE['woord_string'][$i] = $_COOKIE['woord'][$i];
-      setcookie('woord_string', $_COOKIE['woord_string']);
-      $isCorrect = true;
-    }
+  for ($i=0; $i < strlen($_COOKIE['woord']); $i++) {
+    if ($letter == $_COOKIE['woord'][$i]) {
+        $_COOKIE['woord_string'][$i] = $_COOKIE['woord'][$i];
+        setcookie('woord_string', $_COOKIE['woord_string']);
+        $isCorrect = true;
   }
+}
 
-  if ($_COOKIE['won'] != 'true')
-  {
-    if (!$isCorrect)
-    {
-      if ($_COOKIE['lives'] > 0)
-      {
+  if ($_COOKIE['won'] != 'true') {
+    if (!$isCorrect) {
+      if ($_COOKIE['lives'] > 0) {
         $_COOKIE['lives'] = $_COOKIE['lives'] - 1;
         setcookie('lives', $_COOKIE['lives']);
-      }
-
-
-      if ($_COOKIE['lives'] == 0)
-      {
-        $_COOKIE['message'] = 'YOU LOST :)';
-        setcookie('message', $_COOKIE['message']);
-      }
-
     }
-  }
+      if ($_COOKIE['lives'] == 0) {
+        $_COOKIE['message'] = 'VERLOREN, Het juiste woord was ' . $_COOKIE['woord'];
+        setcookie('message', $_COOKIE['message']);
+    }
 
-  if ($_COOKIE['woord_string'] == $_COOKIE['woord'])
-  {
-    $_COOKIE['message'] = 'YOU WIN!!';
+  }
+}
+  if ($_COOKIE['woord_string'] == $_COOKIE['woord']) {
+    $_COOKIE['message'] = 'GEWONNEN';
     $_COOKIE['won'] = 'true';
     setcookie('message', $_COOKIE['message']);
     setcookie('won', $_COOKIE['won']);
   }
-
-
 }
-
-
-
- ?>
-
+?>
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
   <head>
     <link href="style.css" rel="Stylesheet">
     <meta charset="utf-8">
@@ -64,7 +47,7 @@ if (isset($_POST['submit']) && $_COOKIE['lives'] != 0)
     <div class="container">
       <div class="linkerdiv">
         <div class="sub_div">
-          <form class="form" action="game.php" method="post">
+          <form class="form" action="galgje.php" method="post">
             <div class="section">
               <input type="submit" name="submit" value="q">
               <input type="submit" name="submit" value="w">
@@ -116,6 +99,7 @@ if (isset($_POST['submit']) && $_COOKIE['lives'] != 0)
         if (isset($_COOKIE['message']))
         {
           echo "<h1>" . $_COOKIE['message'] . "</h1>";
+          header("refresh:2; url=index.php");
         }
 
         ?>

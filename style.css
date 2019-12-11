@@ -1,12 +1,13 @@
 body {
     background-color: lightblue;
 }
-h1 {
-    margin-top: 8em;
-}
-#letter {
-    width: 10px
-}
 img {
-    width: 25em
+    width: 250px;
+}
+.streepje
+{
+  display: inline-block;
+  font-weight: lighter;
+  font-family: sans-serif;
+  margin: 10px;
 }
